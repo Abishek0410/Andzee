@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard | Andzee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+/* ==========================================
+   ANDZEE TEACHER DASHBOARD
+   Brand: #00B4FF blue | #7B2FFF purple
+          #FF9B00 amber | #0D0A1E navy
+========================================== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#00B4FF; --blue-dim:rgba(0,180,255,.12);
+  --purple:#7B2FFF; --purple-dim:rgba(123,47,255,.14);
+  --amber:#FF9B00; --amber-dim:rgba(255,155,0,.13);
+  --green:#10B981; --green-dim:rgba(16,185,129,.13);
+  --red:#EF4444; --red-dim:rgba(239,68,68,.13);
+  --navy:#0D0A1E; --navy2:#120E2A; --navy3:#1A1535;
+  --card:rgba(255,255,255,.045);
+  --border:rgba(255,255,255,.09);
+  --border2:rgba(255,255,255,.06);
+  --off:#EEF0FF; --muted:rgba(238,240,255,.45);
+  --muted2:rgba(238,240,255,.28);
+  --sidebar-w:230px;
+  --grad:linear-gradient(135deg,var(--blue),var(--purple));
+  --f-display:'Plus Jakarta Sans',sans-serif;
+  --f-body:'DM Sans',sans-serif;
+  --r:14px; --r-sm:10px; --r-lg:20px;
+}
+html{font-size:15px;height:100%;}
+body{
+  font-family:var(--f-body);
+  background:var(--navy);
+  color:var(--off);
+  min-height:100vh;
+  display:flex;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:99px;}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+.sidebar{
+  position:fixed; top:0; left:0; bottom:0;
+  width:var(--sidebar-w);
+  background:var(--navy2);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  z-index:200;
+  transition:transform .3s ease;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+.sidebar-logo{
+  padding:22px 20px 18px;
+  display:flex; align-items:center; gap:11px;
+  border-bottom:1px solid var(--border2);
+  flex-shrink:0;
+}
+.sidebar-logo-img{
+  width:38px; height:38px;
+  background:linear-gradient(135deg,#00B4FF,#7B2FFF);
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 14px rgba(123,47,255,.4);
+}
+.sidebar-logo-img img{width:30px;height:30px;object-fit:contain;}
+.sidebar-brand{display:flex;flex-direction:column;line-height:1;}
+.sidebar-brand-name{
+  font-family:var(--f-display);
+  font-size:.95rem; font-weight:700; color:var(--off);
+}
+.sidebar-brand-sub{
+  font-size:.6rem; font-weight:500;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted2); margin-top:2px;
+}
+.sidebar-nav{flex:1;padding:14px 0;}
+.nav-group{margin-bottom:4px;}
+.nav-group-label{
+  font-size:.62rem; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted2); padding:10px 20px 4px;
+}
+.nav-item{
+  display:flex; align-items:center; gap:11px;
+  padding:10px 20px;
+  border-radius:0;
+  color:var(--muted);
+  font-size:.875rem; font-weight:500;
+  cursor:pointer;
+  transition:background .18s,color .18s;
+  position:relative;
+  user-select:none;
+  text-decoration:none;
+  border:none; background:none; width:100%; text-align:left;
+}
+.nav-item i{width:18px;text-align:center;font-size:.9rem;flex-shrink:0;}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--off);}
+.nav-item.active{
+  color:var(--off);
+  background:var(--purple-dim);
+}
+.nav-item.active::before{
+  content:'';
+  position:absolute; left:0; top:0; bottom:0;
+  width:3px;
+  background:var(--grad);
+  border-radius:0 2px 2px 0;
+}
+.nav-item.active i{color:var(--purple);}
+.nav-badge{
+  margin-left:auto;
+  background:var(--purple);
+  color:#fff; font-size:.6rem; font-weight:700;
+  padding:2px 7px; border-radius:99px;
+}
+.sidebar-footer{
+  padding:16px 20px;
+  border-top:1px solid var(--border2);
+  flex-shrink:0;
+}
+.sidebar-help{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px;
+  border-radius:var(--r-sm);
+  background:var(--card);
+  border:1px solid var(--border2);
+  cursor:pointer;
+  transition:background .2s;
+}
+.sidebar-help:hover{background:rgba(255,255,255,.07);}
+.sidebar-help-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--blue-dim);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);font-size:.8rem;flex-shrink:0;
+}
+.sidebar-help-text{line-height:1.2;}
+.sidebar-help-text strong{font-size:.8rem;font-weight:600;color:var(--off);}
+.sidebar-help-text span{font-size:.7rem;color:var(--muted2);display:block;}
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
+.main{
+  margin-left:var(--sidebar-w);
+  flex:1; display:flex; flex-direction:column;
+  min-height:100vh; overflow:hidden;
+}
+
+/* ---- TOPBAR ---- */
+.topbar{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:16px;
+  padding:0 28px;
+  height:64px;
+  background:rgba(13,10,30,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.topbar-title{
+  font-family:var(--f-display);
+  font-size:1rem; font-weight:700; color:var(--off);
+  margin-right:auto;
+}
+.topbar-search{
+  display:flex; align-items:center; gap:9px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r-sm);
+  padding:0 14px; height:36px;
+  transition:border-color .2s, box-shadow .2s;
+}
+.topbar-search:focus-within{
+  border-color:rgba(0,180,255,.4);
+  box-shadow:0 0 0 3px rgba(0,180,255,.1);
+}
+.topbar-search i{color:var(--muted2);font-size:.8rem;}
+.topbar-search input{
+  background:none; border:none; outline:none;
+  color:var(--off); font-size:.82rem; width:180px;
+}
+.topbar-search input::placeholder{color:var(--muted2);}
+.topbar-btn{
+  width:36px;height:36px;
+  border-radius:var(--r-sm);
+  background:var(--card);
+  border:1px solid var(--border);
+  color:var(--muted); font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer; transition:background .2s,color .2s;
+  position:relative;
+}
+.topbar-btn:hover{background:rgba(255,255,255,.08);color:var(--off);}
+.notif-badge{
+  position:absolute; top:-4px; right:-4px;
+  width:17px;height:17px;border-radius:50%;
+  background:var(--purple);
+  color:#fff;font-size:.55rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--navy2);
+}
+.topbar-avatar{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  padding:5px 10px; border-radius:var(--r-sm);
+  transition:background .2s;
+}
+.topbar-avatar:hover{background:var(--card);}
+.avatar-img{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--grad); display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-size:.8rem;font-weight:700;color:#fff;
+  flex-shrink:0; border:2px solid rgba(123,47,255,.4);
+}
+.avatar-info{display:flex;flex-direction:column;line-height:1.2;}
+.avatar-name{font-size:.8rem;font-weight:600;color:var(--off);}
+.avatar-role{font-size:.68rem;color:var(--muted2);}
+.topbar-avatar i{font-size:.7rem;color:var(--muted2);}
+.mobile-menu-btn{
+  display:none;width:36px;height:36px;
+  border-radius:var(--r-sm);background:var(--card);
+  border:1px solid var(--border);color:var(--muted);
+  font-size:.9rem;cursor:pointer;
+  align-items:center;justify-content:center;
+}
+
+/* ---- PAGE CONTENT ---- */
+.content{
+  padding:26px 28px;
+  flex:1;
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:22px;
+}
+
+/* ---- WELCOME STRIP ---- */
+.welcome-strip{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.welcome-text h2{
+  font-family:var(--f-display);
+  font-size:1.25rem;font-weight:800;color:var(--off);
+  letter-spacing:-.02em;
+}
+.welcome-text p{font-size:.82rem;color:var(--muted);margin-top:3px;}
+.welcome-actions{display:flex;gap:10px;}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:var(--r-sm);
+  font-family:var(--f-display);font-size:.82rem;font-weight:600;
+  cursor:pointer;border:none;transition:all .2s ease;white-space:nowrap;
+}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 16px rgba(123,47,255,.4);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(123,47,255,.5);}
+.btn-ghost{background:var(--card);color:var(--off);border:1px solid var(--border);}
+.btn-ghost:hover{background:rgba(255,255,255,.08);}
+.btn-danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.25);}
+.btn-danger:hover{background:rgba(239,68,68,.22);}
+.btn-sm{padding:7px 13px;font-size:.78rem;}
+.btn-icon{width:32px;height:32px;padding:0;justify-content:center;}
+
+/* ==========================================
+   STAT CARDS
+========================================== */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.stat-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:18px 20px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:transform .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.35);}
+.stat-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--c1,.05) 0%,transparent 60%);
+  pointer-events:none;
+}
+.stat-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+  border:1px solid rgba(255,255,255,.06);
+}
+.stat-body{flex:1;min-width:0;}
+.stat-label{font-size:.72rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.stat-value{
+  font-family:var(--f-display);
+  font-size:1.75rem;font-weight:800;color:var(--off);
+  letter-spacing:-.03em;line-height:1;margin:4px 0;
+}
+.stat-delta{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:500;}
+.stat-delta.up{color:var(--green);}
+.stat-delta.down{color:var(--red);}
+.stat-mini-chart{
+  position:absolute;right:14px;bottom:14px;
+  opacity:.6;
+}
+.stat-mini-chart svg{width:70px;height:28px;}
+
+/* stat colour variants */
+.stat-blue .stat-icon{background:var(--blue-dim);color:var(--blue);}
+.stat-purple .stat-icon{background:var(--purple-dim);color:var(--purple);}
+.stat-amber .stat-icon{background:var(--amber-dim);color:var(--amber);}
+.stat-green .stat-icon{background:var(--green-dim);color:var(--green);}
+
+/* ==========================================
+   MID ROW  (Create New | Live Game)
+========================================== */
+.mid-row{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:14px;}
+
+/* ---- Create New ---- */
+.panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:20px;
+}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:4px;
+}
+.panel-title{font-family:var(--f-display);font-size:.9rem;font-weight:700;color:var(--off);}
+.panel-sub{font-size:.74rem;color:var(--muted);margin-bottom:16px;}
+.create-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.create-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border2);
+  border-radius:var(--r-sm);
+  padding:14px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:all .2s;text-align:center;
+}
+.create-card:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);transform:translateY(-2px);}
+.create-card-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+}
+.create-card span{font-size:.78rem;font-weight:600;color:var(--off);}
+.cc-quiz .create-card-icon{background:var(--purple-dim);color:var(--purple);}
+.cc-game .create-card-icon{background:var(--amber-dim);color:var(--amber);}
+.cc-live .create-card-icon{background:rgba(0,180,255,.13);color:var(--blue);}
+.cc-import .create-card-icon{background:var(--green-dim);color:var(--green);}
+
+/* ---- Live Game ---- */
+.live-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;}
+.live-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);
+  color:var(--green);
+  border-radius:99px;padding:3px 10px;font-size:.7rem;font-weight:600;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:livePulse 1.5s ease-in-out infinite;}
+.live-gameid{
+  font-family:var(--f-display);
+  font-size:2.6rem;font-weight:800;letter-spacing:.12em;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin:10px 0 4px;line-height:1;
+}
+.live-join-url{font-size:.75rem;color:var(--muted);margin-bottom:10px;}
+.live-join-url span{color:var(--blue);font-weight:600;}
+.live-students{
+  display:flex;align-items:center;gap:7px;
+  font-size:.78rem;color:var(--muted);margin-bottom:14px;
+}
+.live-students i{color:var(--purple);}
+.live-actions{display:flex;gap:8px;margin-top:auto;}
+.btn-start{
+  flex:1;height:42px;border-radius:var(--r-sm);
+  background:var(--grad);color:#fff;
+  font-family:var(--f-display);font-size:.88rem;font-weight:700;
+  border:none;cursor:pointer;
+  box-shadow:0 4px 18px rgba(123,47,255,.45);
+  transition:all .22s;
+}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(123,47,255,.55);}
+.btn-copy{
+  width:42px;height:42px;border-radius:var(--r-sm);
+  background:var(--card);border:1px solid var(--border);
+  color:var(--muted);font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+}
+.btn-copy:hover{background:rgba(255,255,255,.08);color:var(--off);}
+.btn-regen{
+  width:42px;height:42px;border-radius:var(--r-sm);
+  background:var(--blue-dim);border:1px solid rgba(0,180,255,.2);
+  color:var(--blue);font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+}
+.btn-regen:hover{background:rgba(0,180,255,.2);}
+
+/* ---- Recent Games ---- */
+.recent-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.recent-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:var(--r-sm);
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border2);
+  transition:background .2s;cursor:pointer;
+}
+.recent-item:hover{background:rgba(255,255,255,.06);}
+.recent-thumb{
+  width:38px;height:38px;border-radius:8px;
+  background:var(--navy3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0;overflow:hidden;
+}
+.recent-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.recent-info{flex:1;min-width:0;}
+.recent-name{font-size:.82rem;font-weight:600;color:var(--off);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.recent-meta{font-size:.7rem;color:var(--muted);margin-top:1px;}
+.recent-actions{display:flex;gap:4px;flex-shrink:0;}
+.icon-btn{
+  width:28px;height:28px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;cursor:pointer;border:none;
+  transition:all .18s;
+}
+.icon-btn-edit{background:var(--blue-dim);color:var(--blue);}
+.icon-btn-edit:hover{background:rgba(0,180,255,.22);}
+.icon-btn-stat{background:var(--purple-dim);color:var(--purple);}
+.icon-btn-stat:hover{background:rgba(123,47,255,.25);}
+.icon-btn-del{background:var(--red-dim);color:var(--red);}
+.icon-btn-del:hover{background:rgba(239,68,68,.22);}
+.live-pill{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);
+  color:var(--green);border-radius:99px;padding:2px 7px;font-size:.62rem;font-weight:600;
+}
+
+/* ==========================================
+   BOTTOM ROW (Quizzes table | Scoreboard)
+========================================== */
+.bottom-row{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;}
+
+/* ---- Quizzes Panel ---- */
+.tabs-row{display:flex;align-items:center;gap:0;margin-bottom:16px;border-bottom:1px solid var(--border2);}
+.tab-btn{
+  padding:8px 16px 10px;
+  font-family:var(--f-display);font-size:.82rem;font-weight:600;
+  color:var(--muted);cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .2s,border-color .2s;
+}
+.tab-btn.active{color:var(--purple);border-bottom-color:var(--purple);}
+.tab-btn:hover:not(.active){color:var(--off);}
+.tabs-spacer{flex:1;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{
+  font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted2);padding:8px 12px;text-align:left;white-space:nowrap;
+  border-bottom:1px solid var(--border2);
+}
+tbody tr{border-bottom:1px solid var(--border2);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(255,255,255,.03);}
+tbody td{padding:11px 12px;font-size:.8rem;color:var(--off);vertical-align:middle;}
+.quiz-title-cell{font-weight:600;}
+.tag{
+  display:inline-flex;align-items:center;
+  padding:2px 8px;border-radius:99px;font-size:.65rem;font-weight:600;
+  margin-left:6px;
+}
+.tag-quiz{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(123,47,255,.25);}
+.tag-game{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,155,0,.25);}
+.td-num{color:var(--muted);text-align:center;}
+.td-date{color:var(--muted);font-size:.75rem;white-space:nowrap;}
+.td-actions{display:flex;gap:5px;align-items:center;}
+.view-all-link{
+  display:flex;align-items:center;gap:6px;
+  color:var(--purple);font-size:.78rem;font-weight:600;
+  cursor:pointer;margin-top:14px;
+  padding:8px 0; border-top:1px solid var(--border2);
+  transition:gap .2s;
+}
+.view-all-link:hover{gap:10px;}
+
+/* ---- Scoreboard ---- */
+.score-list{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.score-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--r-sm);
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border2);
+  transition:background .18s;
+}
+.score-item:hover{background:rgba(255,255,255,.055);}
+.score-rank{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-size:.72rem;font-weight:800;
+  flex-shrink:0;
+}
+.rank-1{background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#fff;box-shadow:0 2px 8px rgba(251,191,36,.4);}
+.rank-2{background:linear-gradient(135deg,#94A3B8,#CBD5E1);color:#1E293B;}
+.rank-3{background:linear-gradient(135deg,#C2845B,#E2A07A);color:#fff;}
+.rank-other{background:rgba(255,255,255,.06);color:var(--muted);}
+.score-avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--purple-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;color:var(--purple);
+  flex-shrink:0;border:1px solid rgba(123,47,255,.2);
+}
+.score-name{flex:1;font-size:.82rem;font-weight:600;color:var(--off);}
+.score-pts{
+  font-family:var(--f-display);
+  font-size:.9rem;font-weight:800;
+  background:var(--grad);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  flex-shrink:0;
+}
+.score-trophy{color:var(--amber);font-size:.8rem;flex-shrink:0;}
+
+/* ==========================================
+   TOAST
+========================================== */
+.toast-container{
+  position:fixed;bottom:24px;right:24px;
+  display:flex;flex-direction:column;gap:10px;
+  z-index:9999;pointer-events:none;
+}
+.toast{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 18px;
+  border-radius:var(--r-sm);
+  background:var(--navy3);border:1px solid var(--border);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  font-size:.82rem;color:var(--off);
+  animation:toastIn .3s cubic-bezier(.16,1,.3,1) both;
+  pointer-events:all;max-width:320px;
+}
+.toast.out{animation:toastOut .25s ease forwards;}
+.toast i{font-size:.85rem;flex-shrink:0;}
+.toast-success i{color:var(--green);}
+.toast-info i{color:var(--blue);}
+.toast-warn i{color:var(--amber);}
+
+/* ==========================================
+   MODAL
+========================================== */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(13,10,30,.85);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;visibility:hidden;
+  transition:opacity .25s,visibility .25s;
+}
+.modal-overlay.open{opacity:1;visibility:visible;}
+.modal{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  width:min(520px,100%);
+  max-height:90vh;overflow-y:auto;
+  box-shadow:0 32px 80px rgba(0,0,0,.6);
+  transform:scale(.96) translateY(12px);
+  transition:transform .28s cubic-bezier(.16,1,.3,1);
+}
+.modal-overlay.open .modal{transform:scale(1) translateY(0);}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 24px 0;
+}
+.modal-title{font-family:var(--f-display);font-size:1.05rem;font-weight:700;color:var(--off);}
+.modal-close{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--muted);font-size:.8rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;
+}
+.modal-close:hover{background:rgba(255,255,255,.08);color:var(--off);}
+.modal-body{padding:20px 24px;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:7px;display:block;letter-spacing:.04em;text-transform:uppercase;}
+.form-input,.form-select,.form-textarea{
+  width:100%;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  border-radius:var(--r-sm);
+  color:var(--off);
+  font-family:var(--f-body);font-size:.875rem;
+  padding:10px 14px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:rgba(123,47,255,.6);
+  box-shadow:0 0 0 3px rgba(123,47,255,.12);
+}
+.form-select{cursor:pointer;background-color:var(--navy3);}
+.form-select option{background:var(--navy3);}
+.form-textarea{resize:vertical;min-height:90px;line-height:1.5;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-footer{
+  padding:0 24px 22px;
+  display:flex;gap:10px;justify-content:flex-end;
+  border-top:1px solid var(--border2);padding-top:16px;
+}
+.modal-info{
+  font-size:.78rem;color:var(--muted);
+  background:var(--blue-dim);border:1px solid rgba(0,180,255,.18);
+  border-radius:var(--r-sm);padding:10px 14px;margin-bottom:14px;
+  display:flex;align-items:flex-start;gap:9px;
+}
+.modal-info i{color:var(--blue);margin-top:1px;flex-shrink:0;}
+
+/* ---- Delete modal ---- */
+.del-modal{width:min(380px,100%);}
+.del-icon{
+  width:56px;height:56px;border-radius:14px;
+  background:var(--red-dim);border:1px solid rgba(239,68,68,.25);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--red);font-size:1.3rem;margin:0 auto 14px;
+}
+.del-msg{font-size:.875rem;color:var(--muted);text-align:center;line-height:1.6;}
+.del-msg strong{color:var(--off);}
+
+/* ==========================================
+   SIDEBAR OVERLAY (mobile)
+========================================== */
+.sidebar-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:199;
+  background:rgba(13,10,30,.7);backdrop-filter:blur(4px);
+}
+
+/* ==========================================
+   ANIMATIONS
+========================================== */
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+@keyframes toastOut{to{opacity:0;transform:translateX(20px);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+@media(max-width:1200px){
+  .mid-row{grid-template-columns:1fr 1fr;}
+  .mid-row .panel:last-child{grid-column:1/-1;}
+  .recent-list{flex-direction:row;flex-wrap:wrap;}
+  .recent-item{flex:1 1 calc(50% - 4px);min-width:220px;}
+}
+@media(max-width:960px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .bottom-row{grid-template-columns:1fr;}
+  .mid-row{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  :root{--sidebar-w:0px;}
+  .sidebar{transform:translateX(-230px);width:230px;}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay{display:block;}
+  .mobile-menu-btn{display:flex;}
+  .main{margin-left:0;}
+  .content{padding:18px 16px;}
+  .topbar{padding:0 16px;}
+  .topbar-search{display:none;}
+  .welcome-actions{display:none;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .form-row{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr;}
+  .create-grid{grid-template-columns:1fr 1fr;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<!-- ==========================================
+     SIDEBAR OVERLAY (mobile tap to close)
+=========================================== -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ==========================================
+     SIDEBAR
+=========================================== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-img">
+      <i class="fa-solid fa-graduation-cap" style="font-size:1.1rem;color:#fff;"></i>
+    </div>
+    <div class="sidebar-brand">
+      <span class="sidebar-brand-name">Andzee</span>
+      <span class="sidebar-brand-sub">Future Classrooms</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <span class="nav-group-label">Overview</span>
+      <button class="nav-item active" onclick="setNav(this,'dashboard')">
+        <i class="fa-solid fa-table-cells-large"></i> Dashboard
+      </button>
+      <button class="nav-item" onclick="setNav(this,'live')">
+        <i class="fa-solid fa-tower-broadcast"></i> Live Games
+        <span class="nav-badge">1</span>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Content</span>
+      <button class="nav-item" onclick="setNav(this,'quizzes')">
+        <i class="fa-solid fa-clipboard-list"></i> Quizzes
+      </button>
+      <button class="nav-item" onclick="setNav(this,'games')">
+        <i class="fa-solid fa-gamepad"></i> Games
+      </button>
+      <button class="nav-item" onclick="setNav(this,'qbank')">
+        <i class="fa-solid fa-database"></i> Question Bank
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Students</span>
+      <button class="nav-item" onclick="setNav(this,'students')">
+        <i class="fa-solid fa-users"></i> Students
+      </button>
+      <button class="nav-item" onclick="setNav(this,'assign')">
+        <i class="fa-solid fa-book-open"></i> Assignments
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Insights</span>
+      <button class="nav-item" onclick="setNav(this,'reports')">
+        <i class="fa-solid fa-chart-bar"></i> Reports
+      </button>
+      <button class="nav-item" onclick="setNav(this,'score')">
+        <i class="fa-solid fa-medal"></i> Scoreboard
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">More</span>
+      <button class="nav-item" onclick="setNav(this,'messages')">
+        <i class="fa-solid fa-comments"></i> Messages
+        <span class="nav-badge">3</span>
+      </button>
+      <button class="nav-item" onclick="setNav(this,'resources')">
+        <i class="fa-solid fa-folder-open"></i> Resources
+      </button>
+      <button class="nav-item" onclick="setNav(this,'settings')">
+        <i class="fa-solid fa-gear"></i> Settings
+      </button>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-help">
+      <div class="sidebar-help-icon"><i class="fa-solid fa-headset"></i></div>
+      <div class="sidebar-help-text">
+        <strong>Need Help?</strong>
+        <span>We're here to assist!</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ==========================================
+     MAIN
+=========================================== -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="mobile-menu-btn" onclick="openSidebar()" id="mobileMenuBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <span class="topbar-title">Dashboard</span>
+    <div class="topbar-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search quizzes, students…">
+    </div>
+    <button class="topbar-btn" onclick="showToast('No new notifications','fa-bell','info')">
+      <i class="fa-solid fa-bell"></i>
+      <span class="notif-badge">3</span>
+    </button>
+    <button class="topbar-btn" onclick="showToast('Settings coming soon!','fa-gear','info')">
+      <i class="fa-solid fa-gear"></i>
+    </button>
+    <div class="topbar-avatar" onclick="showToast('Profile settings coming soon','fa-user','info')">
+      <div class="avatar-img">PS</div>
+      <div class="avatar-info">
+        <span class="avatar-name">Ms. Priya Sharma</span>
+        <span class="avatar-role">English Teacher</span>
+      </div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- WELCOME -->
+    <div class="welcome-strip">
+      <div class="welcome-text">
+        <h2>Welcome back, Ms. Priya Sharma! 👋</h2>
+        <p>Let's make today's class engaging and fun.</p>
+      </div>
+      <div class="welcome-actions">
+        <button class="btn btn-ghost" onclick="openModal('importModal')">
+          <i class="fa-solid fa-file-import"></i> Import Questions
+        </button>
+        <button class="btn btn-primary" onclick="openModal('addQuizModal')">
+          <i class="fa-solid fa-plus"></i> Add Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card stat-blue">
+        <div class="stat-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Live Games</div>
+          <div class="stat-value" id="statLive">8</div>
+          <div class="stat-delta up"><i class="fa-solid fa-arrow-trend-up"></i> 2 this week</div>
+        </div>
+        <div class="stat-mini-chart">
+          <svg viewBox="0 0 70 28" fill="none">
+            <polyline points="0,22 14,16 28,18 42,8 56,12 70,4" stroke="#00B4FF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-card stat-purple">
+        <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Quizzes Created</div>
+          <div class="stat-value" id="statQuizzes">24</div>
+          <div class="stat-delta up"><i class="fa-solid fa-arrow-trend-up"></i> 6 this month</div>
+        </div>
+        <div class="stat-mini-chart">
+          <svg viewBox="0 0 70 28" fill="none">
+            <polyline points="0,20 14,14 28,16 42,6 56,10 70,2" stroke="#7B2FFF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-card stat-amber">
+        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Total Students</div>
+          <div class="stat-value" id="statStudents">128</div>
+          <div class="stat-delta up"><i class="fa-solid fa-arrow-trend-up"></i> 12 this month</div>
+        </div>
+        <div class="stat-mini-chart">
+          <svg viewBox="0 0 70 28" fill="none">
+            <polyline points="0,24 14,18 28,20 42,10 56,14 70,6" stroke="#FF9B00" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Avg. Score</div>
+          <div class="stat-value" id="statScore">78%</div>
+          <div class="stat-delta up"><i class="fa-solid fa-arrow-trend-up"></i> 8% this month</div>
+        </div>
+        <div class="stat-mini-chart">
+          <svg viewBox="0 0 70 28" fill="none">
+            <polyline points="0,18 14,20 28,12 42,14 56,6 70,8" stroke="#10B981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- MID ROW -->
+    <div class="mid-row">
+
+      <!-- Create New -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Create New</span>
+        </div>
+        <p class="panel-sub">Add content or start a game</p>
+        <div class="create-grid">
+          <div class="create-card cc-quiz" onclick="openModal('addQuizModal')">
+            <div class="create-card-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
+            <span>Add Quiz</span>
+          </div>
+          <div class="create-card cc-game" onclick="openModal('addGameModal')">
+            <div class="create-card-icon"><i class="fa-solid fa-gamepad"></i></div>
+            <span>Add Game</span>
+          </div>
+          <div class="create-card cc-live" onclick="startLiveGame()">
+            <div class="create-card-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+            <span>Live Game</span>
+          </div>
+          <div class="create-card cc-import" onclick="openModal('importModal')">
+            <div class="create-card-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+            <span>Import Questions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Game Panel -->
+      <div class="live-panel">
+        <div class="panel-header" style="margin-bottom:12px;">
+          <span class="panel-title">Live Game</span>
+          <span class="live-badge"><span class="live-dot"></span> Live</span>
+        </div>
+        <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Game ID</div>
+        <div class="live-gameid" id="gameIdDisplay">7XQ8B2</div>
+        <div class="live-join-url">Students join at: <span>join.andzee.com</span></div>
+        <div class="live-students"><i class="fa-solid fa-users"></i> <span id="joinedCount">12</span> Students Joined</div>
+        <div class="live-actions">
+          <button class="btn-start" onclick="showToast('Starting game...','fa-play','success')">
+            <i class="fa-solid fa-play"></i> Start Game
+          </button>
+          <button class="btn-copy" title="Copy Game ID" onclick="copyGameId()">
+            <i class="fa-solid fa-copy" id="copyIcon"></i>
+          </button>
+          <button class="btn-regen" title="Generate New ID" onclick="regenGameId()">
+            <i class="fa-solid fa-arrows-rotate" id="regenIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Recent Games -->
+      <div class="panel">
+        <div class="panel-header" style="margin-bottom:14px;">
+          <span class="panel-title">Recent Games</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Loading all games...','fa-list','info')">View All</button>
+        </div>
+        <div class="recent-list" id="recentList"></div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="bottom-row">
+
+      <!-- Quizzes Table -->
+      <div class="panel">
+        <div class="tabs-row">
+          <button class="tab-btn active" onclick="switchTab(this,'quizzes')">Quizzes</button>
+          <button class="tab-btn" onclick="switchTab(this,'games')">Games</button>
+          <div class="tabs-spacer"></div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('addQuizModal')">
+            <i class="fa-solid fa-plus"></i> Add Quiz
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table id="contentTable">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th style="text-align:center;">Questions</th>
+                <th style="text-align:center;">Plays</th>
+                <th>Last Played</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contentTbody"></tbody>
+          </table>
+        </div>
+        <div class="view-all-link" onclick="showToast('Loading all quizzes...','fa-list','info')">
+          View All Quizzes <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </div>
+
+      <!-- Scoreboard -->
+      <div class="panel">
+        <div class="panel-header" style="margin-bottom:14px;">
+          <span class="panel-title">Final Scoreboard</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Opening full scoreboard...','fa-trophy','info')">View Full</button>
+        </div>
+        <div class="score-list" id="scoreList"></div>
+        <div class="view-all-link" style="margin-top:8px;" onclick="showToast('Loading full scoreboard...','fa-medal','info')">
+          View Full Scoreboard <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ==========================================
+     TOAST CONTAINER
+=========================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ==========================================
+     ADD QUIZ MODAL
+=========================================== -->
+<div class="modal-overlay" id="addQuizModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-file-circle-plus" style="color:var(--purple);margin-right:8px;"></i>Add New Quiz</span>
+      <button class="modal-close" onclick="closeModal('addQuizModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Quiz Title</label>
+        <input type="text" class="form-input" id="quizTitle" placeholder="e.g. Past Simple Tense">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="quizCategory">
+            <option>Grammar</option>
+            <option>Vocabulary</option>
+            <option>Reading</option>
+            <option>Speaking</option>
+            <option>Writing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time Per Question</label>
+          <select class="form-select" id="quizTime">
+            <option>20 seconds</option>
+            <option>30 seconds</option>
+            <option selected>40 seconds</option>
+            <option>60 seconds</option>
+            <option>90 seconds</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description (optional)</label>
+        <textarea class="form-textarea" id="quizDesc" placeholder="Short description of this quiz…"></textarea>
+      </div>
+      <div class="modal-info">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>After creating the quiz, you'll be able to add questions one by one or import from a spreadsheet.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addQuizModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveQuiz()"><i class="fa-solid fa-check"></i> Create Quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     ADD GAME MODAL
+=========================================== -->
+<div class="modal-overlay" id="addGameModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-gamepad" style="color:var(--amber);margin-right:8px;"></i>Add New Game</span>
+      <button class="modal-close" onclick="closeModal('addGameModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Game Name</label>
+        <input type="text" class="form-input" id="gameName" placeholder="e.g. Vocabulary Battle">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Quiz to Play</label>
+          <select class="form-select" id="gameQuiz">
+            <option>Past Simple Tense</option>
+            <option>Vocabulary - Unit 3</option>
+            <option>Active Passive Voice</option>
+            <option>Direct Indirect Speech</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Game Mode</label>
+          <select class="form-select" id="gameMode">
+            <option>Classic Quiz</option>
+            <option>Speed Round</option>
+            <option>Team Battle</option>
+            <option>Survival</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Max Players</label>
+        <input type="number" class="form-input" id="gameMax" value="30" min="2" max="200">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('addGameModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveGame()"><i class="fa-solid fa-play"></i> Create Game</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     EDIT QUIZ MODAL
+=========================================== -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-pen-to-square" style="color:var(--blue);margin-right:8px;"></i>Edit Quiz</span>
+      <button class="modal-close" onclick="closeModal('editModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Quiz Title</label>
+        <input type="text" class="form-input" id="editTitle">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="editCategory">
+            <option>Grammar</option><option>Vocabulary</option><option>Reading</option><option>Speaking</option><option>Writing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time Per Question</label>
+          <select class="form-select" id="editTime">
+            <option>20 seconds</option><option>30 seconds</option><option>40 seconds</option><option>60 seconds</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="editDesc"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('editModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="updateQuiz()"><i class="fa-solid fa-save"></i> Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     IMPORT MODAL
+=========================================== -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-file-arrow-up" style="color:var(--green);margin-right:8px;"></i>Import Questions</span>
+      <button class="modal-close" onclick="closeModal('importModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Use our CSV template to import questions in bulk. Download the template, fill it out, then upload below.</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:18px;">
+        <button class="btn btn-ghost" style="flex:1;" onclick="showToast('Template copied!','fa-copy','success')">
+          <i class="fa-solid fa-copy"></i> Copy Template
+        </button>
+        <button class="btn btn-ghost" style="flex:1;" onclick="showToast('Template downloading...','fa-download','info')">
+          <i class="fa-solid fa-download"></i> Download Template
+        </button>
+      </div>
+      <div style="border:2px dashed var(--border);border-radius:var(--r);padding:32px;text-align:center;cursor:pointer;transition:border-color .2s;"
+           onmouseenter="this.style.borderColor='rgba(123,47,255,.5)'" onmouseleave="this.style.borderColor='var(--border)'"
+           onclick="showToast('File picker will open here','fa-folder-open','info')">
+        <i class="fa-solid fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--purple);margin-bottom:10px;display:block;"></i>
+        <div style="font-size:.85rem;font-weight:600;color:var(--off);margin-bottom:4px;">Drop CSV file here</div>
+        <div style="font-size:.75rem;color:var(--muted);">or click to browse · CSV files only</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('importModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="showToast('Upload functionality coming soon!','fa-upload','warn');closeModal('importModal')">
+        <i class="fa-solid fa-upload"></i> Upload CSV
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     DELETE CONFIRM MODAL
+=========================================== -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal del-modal">
+    <div class="modal-body" style="padding:28px 24px 8px;text-align:center;">
+      <div class="del-icon"><i class="fa-solid fa-trash-can"></i></div>
+      <div class="modal-title" style="text-align:center;margin-bottom:10px;">Delete Quiz?</div>
+      <p class="del-msg">Are you sure you want to delete <strong id="deleteItemName">"Past Simple Tense"</strong>? This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:12px;">
+      <button class="btn btn-ghost" onclick="closeModal('deleteModal')" style="min-width:110px;">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDelete()" style="min-width:110px;"><i class="fa-solid fa-trash-can"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==========================================
+   STATE — replace with API calls later
+========================================== */
+const STATE = {
+  currentTab: 'quizzes',
+  deleteTarget: null,
+  editTarget: null,
+  quizzes: [
+    { id:1, title:'Past Simple Tense',      category:'Grammar',    questions:20, plays:24, lastPlayed:'Today',        type:'quiz' },
+    { id:2, title:'Vocabulary – Unit 3',    category:'Vocabulary', questions:15, plays:18, lastPlayed:'Yesterday',    type:'quiz' },
+    { id:3, title:'Active Passive Voice',   category:'Grammar',    questions:25, plays:30, lastPlayed:'May 25, 2026', type:'quiz' },
+    { id:4, title:'Direct Indirect Speech', category:'Grammar',    questions:18, plays:22, lastPlayed:'May 22, 2026', type:'quiz' },
+    { id:5, title:'Prepositions Practice',  category:'Grammar',    questions:20, plays:16, lastPlayed:'May 20, 2026', type:'quiz' },
+  ],
+  games: [
+    { id:6, title:'Vocabulary Battle',      category:'Live',       questions:15, plays:12, lastPlayed:'Today',        type:'game' },
+    { id:7, title:'Grammar Challenge',      category:'Classic',    questions:18, plays:18, lastPlayed:'Yesterday',    type:'game' },
+    { id:8, title:'Sentence Scramble',      category:'Speed',      questions:10, plays:15, lastPlayed:'2 days ago',   type:'game' },
+    { id:9, title:'Tenses Power',           category:'Team',       questions:22, plays:20, lastPlayed:'3 days ago',   type:'game' },
+  ],
+  recentGames: [
+    { title:'Vocabulary Battle', meta:'Today · 12 Players',    live:true  },
+    { title:'Grammar Challenge', meta:'Yesterday · 18 Players',live:false },
+    { title:'Sentence Scramble', meta:'2 days ago · 15 Players',live:false },
+    { title:'Tenses Power',      meta:'3 days ago · 20 Players',live:false },
+  ],
+  scoreboard: [
+    { name:'Aarav Sharma', pts:9250, initials:'AS' },
+    { name:'Diya Patel',   pts:8420, initials:'DP' },
+    { name:'Rohan Mehta',  pts:7980, initials:'RM' },
+    { name:'Sneha Iyer',   pts:7150, initials:'SI' },
+    { name:'Vihaan Gupta', pts:6650, initials:'VG' },
+  ],
+};
+
+/* ==========================================
+   INIT
+========================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  renderRecentGames();
+  renderTable('quizzes');
+  renderScoreboard();
+});
+
+/* ==========================================
+   SIDEBAR NAV
+========================================== */
+function setNav(el, section) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelector('.topbar-title').textContent =
+    el.textContent.trim().split('\n')[0].trim();
+  closeSidebar();
+  showToast(`Loading ${section}...`, 'fa-spinner', 'info');
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').style.display = 'block';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').style.display = 'none';
+}
+
+/* ==========================================
+   RENDER FUNCTIONS
+========================================== */
+function renderRecentGames() {
+  const list = document.getElementById('recentList');
+  const icons = ['📚','📝','🎯','⚡'];
+  list.innerHTML = STATE.recentGames.map((g,i) => `
+    <div class="recent-item">
+      <div class="recent-thumb">${icons[i]}</div>
+      <div class="recent-info">
+        <div class="recent-name">${g.title} ${g.live ? '<span class="live-pill"><i class="fa-solid fa-circle" style="font-size:.45rem;"></i> Live</span>' : ''}</div>
+        <div class="recent-meta">${g.meta}</div>
+      </div>
+      <div class="recent-actions">
+        <button class="icon-btn icon-btn-stat" title="Stats" onclick="showToast('Loading stats for ${g.title}...','fa-chart-bar','info')"><i class="fa-solid fa-chart-bar"></i></button>
+        <button class="icon-btn icon-btn-edit" title="Edit" onclick="openEditModal(${i+10})"><i class="fa-solid fa-pen"></i></button>
+        <button class="icon-btn icon-btn-del"  title="Delete" onclick="openDeleteModal('${g.title}')"><i class="fa-solid fa-trash-can"></i></button>
+      </div>
+    </div>`).join('');
+}
+
+function renderTable(tab) {
+  const rows = tab === 'quizzes' ? STATE.quizzes : STATE.games;
+  document.getElementById('contentTbody').innerHTML = rows.map(r => `
+    <tr>
+      <td class="quiz-title-cell">${r.title} <span class="tag ${r.type==='quiz'?'tag-quiz':'tag-game'}">${r.type}</span></td>
+      <td class="td-num">${r.questions}</td>
+      <td class="td-num">${r.plays}</td>
+      <td class="td-date">${r.lastPlayed}</td>
+      <td>
+        <div class="td-actions">
+          <button class="icon-btn icon-btn-edit" title="Edit" onclick="openEditModal(${r.id})"><i class="fa-solid fa-pen"></i></button>
+          <button class="icon-btn icon-btn-stat" title="Stats" onclick="showToast('Loading stats...','fa-chart-bar','info')"><i class="fa-solid fa-chart-bar"></i></button>
+          <button class="icon-btn icon-btn-del"  title="Delete" onclick="openDeleteModal('${r.title}',${r.id})"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function renderScoreboard() {
+  const medals = ['rank-1','rank-2','rank-3','rank-other','rank-other'];
+  const trophies = ['🏆','🥈','🥉','',''];
+  document.getElementById('scoreList').innerHTML = STATE.scoreboard.map((s,i) => `
+    <div class="score-item">
+      <div class="score-rank ${medals[i]}">${i+1}</div>
+      <div class="score-avatar">${s.initials}</div>
+      <div class="score-name">${s.name}</div>
+      <div class="score-pts">${s.pts.toLocaleString()}</div>
+      ${trophies[i] ? `<div class="score-trophy">${trophies[i]}</div>` : '<div style="width:18px;"></div>'}
+    </div>`).join('');
+}
+
+/* ==========================================
+   TAB SWITCH
+========================================== */
+function switchTab(el, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  STATE.currentTab = tab;
+  renderTable(tab);
+}
+
+/* ==========================================
+   GAME ID
+========================================== */
+function regenGameId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const id = Array.from({length:6}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+  document.getElementById('gameIdDisplay').textContent = id;
+  const icon = document.getElementById('regenIcon');
+  icon.style.transform = 'rotate(360deg)';
+  icon.style.transition = 'transform .5s ease';
+  setTimeout(() => { icon.style.transform = ''; icon.style.transition = ''; }, 500);
+  showToast(`New Game ID: ${id}`, 'fa-dice', 'success');
+  // BACKEND: POST /api/game/generate-id
+}
+
+function copyGameId() {
+  const id = document.getElementById('gameIdDisplay').textContent;
+  navigator.clipboard.writeText(id).then(() => {
+    const icon = document.getElementById('copyIcon');
+    icon.className = 'fa-solid fa-check';
+    setTimeout(() => icon.className = 'fa-solid fa-copy', 1800);
+    showToast(`Game ID ${id} copied!`, 'fa-copy', 'success');
+  });
+}
+
+function startLiveGame() {
+  showToast('Starting live session...', 'fa-tower-broadcast', 'success');
+  // BACKEND: POST /api/game/start
+}
+
+/* ==========================================
+   MODALS
+========================================== */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); });
+});
+
+/* ==========================================
+   ADD / SAVE QUIZ
+========================================== */
+function saveQuiz() {
+  const title = document.getElementById('quizTitle').value.trim();
+  if (!title) {
+    document.getElementById('quizTitle').focus();
+    showToast('Please enter a quiz title', 'fa-triangle-exclamation', 'warn');
+    return;
+  }
+  const newQuiz = {
+    id: Date.now(), title,
+    category: document.getElementById('quizCategory').value,
+    questions: 0, plays: 0, lastPlayed: '—', type: 'quiz'
+  };
+  STATE.quizzes.unshift(newQuiz);
+  document.getElementById('statQuizzes').textContent = STATE.quizzes.length;
+  renderTable('quizzes');
+  document.getElementById('quizTitle').value = '';
+  closeModal('addQuizModal');
+  showToast(`Quiz "${title}" created!`, 'fa-circle-check', 'success');
+  // BACKEND: POST /api/quiz { title, category, timeLimit }
+}
+
+/* ==========================================
+   ADD GAME
+========================================== */
+function saveGame() {
+  const name = document.getElementById('gameName').value.trim();
+  if (!name) {
+    document.getElementById('gameName').focus();
+    showToast('Please enter a game name', 'fa-triangle-exclamation', 'warn');
+    return;
+  }
+  const newGame = {
+    id: Date.now(), title: name,
+    category: document.getElementById('gameMode').value,
+    questions: 0, plays: 0, lastPlayed: '—', type: 'game'
+  };
+  STATE.games.unshift(newGame);
+  renderTable('games');
+  document.getElementById('gameName').value = '';
+  closeModal('addGameModal');
+  showToast(`Game "${name}" created!`, 'fa-circle-check', 'success');
+  // BACKEND: POST /api/game { name, quizId, mode, maxPlayers }
+}
+
+/* ==========================================
+   EDIT QUIZ
+========================================== */
+function openEditModal(id) {
+  const all = [...STATE.quizzes, ...STATE.games, ...STATE.recentGames.map((g,i)=>({id:i+10,...g}))];
+  const item = all.find(q => q.id === id);
+  STATE.editTarget = id;
+  document.getElementById('editTitle').value = item?.title || '';
+  document.getElementById('editDesc').value = '';
+  openModal('editModal');
+}
+
+function updateQuiz() {
+  const title = document.getElementById('editTitle').value.trim();
+  if (!title) { showToast('Title cannot be empty','fa-triangle-exclamation','warn'); return; }
+  const q = STATE.quizzes.find(q => q.id === STATE.editTarget);
+  if (q) { q.title = title; renderTable(STATE.currentTab); }
+  closeModal('editModal');
+  showToast(`Updated to "${title}"`, 'fa-circle-check', 'success');
+  // BACKEND: PUT /api/quiz/:id { title, category, timeLimit }
+}
+
+/* ==========================================
+   DELETE
+========================================== */
+function openDeleteModal(name, id) {
+  document.getElementById('deleteItemName').textContent = `"${name}"`;
+  STATE.deleteTarget = { name, id };
+  openModal('deleteModal');
+}
+
+function confirmDelete() {
+  if (!STATE.deleteTarget) return;
+  const { name, id } = STATE.deleteTarget;
+  STATE.quizzes = STATE.quizzes.filter(q => q.id !== id);
+  STATE.games    = STATE.games.filter(g => g.id !== id);
+  renderTable(STATE.currentTab);
+  closeModal('deleteModal');
+  showToast(`"${name}" deleted`, 'fa-trash-can', 'warn');
+  // BACKEND: DELETE /api/quiz/:id
+}
+
+/* ==========================================
+   TOAST
+========================================== */
+function showToast(msg, icon='fa-info-circle', type='info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('out');
+    setTimeout(() => toast.remove(), 280);
+  }, 3000);
+}
+
+/* ==========================================
+   KEYBOARD: ESC closes modals
+========================================== */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open')
+      .forEach(m => m.classList.remove('open'));
+  }
+});
+</script>
+</body>
+</html>
