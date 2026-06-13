@@ -296,7 +296,7 @@ body {
 #skipIntro {
     position: absolute;
     right: 28px;
-    bottom: 35px;
+    bottom: 39px;
     display: flex;
     align-items: center;
     gap: 8px;
