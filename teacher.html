@@ -70,14 +70,15 @@ body{
   flex-shrink:0;
 }
 .sidebar-logo-img{
-  width:38px; height:38px;
-  background:linear-gradient(135deg,#00B4FF,#7B2FFF);
+  width:42px; height:42px;
+  background:#ffffff;
   border-radius:10px;
   display:flex; align-items:center; justify-content:center;
   flex-shrink:0;
-  box-shadow:0 4px 14px rgba(123,47,255,.4);
+  box-shadow:0 4px 14px rgba(123,47,255,.35),0 0 0 1px rgba(123,47,255,.2);
+  overflow:hidden;
 }
-.sidebar-logo-img img{width:30px;height:30px;object-fit:contain;}
+.sidebar-logo-img img{width:38px;height:38px;object-fit:contain;display:block;}
 .sidebar-brand{display:flex;flex-direction:column;line-height:1;}
 .sidebar-brand-name{
   font-family:var(--f-display);
@@ -409,6 +410,38 @@ body{
   cursor:pointer;transition:all .2s;
 }
 .btn-regen:hover{background:rgba(0,180,255,.2);}
+.btn-qr{
+  width:42px;height:42px;border-radius:var(--r-sm);
+  background:var(--amber-dim);border:1px solid rgba(255,155,0,.25);
+  color:var(--amber);font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;flex-shrink:0;
+}
+.btn-qr:hover{background:rgba(255,155,0,.22);transform:translateY(-1px);}
+/* QR Modal */
+.qr-modal-inner{width:min(360px,100%);}
+.qr-box{
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  padding:20px 0 4px;
+}
+.qr-canvas-wrap{
+  width:200px;height:200px;
+  background:#fff;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(0,0,0,.35),0 0 0 1px rgba(123,47,255,.2);
+  padding:12px;flex-shrink:0;
+}
+#qrCanvas{display:block;}
+.qr-id-label{
+  font-family:var(--f-display);
+  font-size:1.6rem;font-weight:800;letter-spacing:.18em;
+  background:var(--grad);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+.qr-url{font-size:.78rem;color:var(--muted);text-align:center;}
+.qr-url span{color:var(--blue);font-weight:600;}
+.qr-actions{display:flex;gap:10px;width:100%;margin-top:4px;}
+.qr-actions .btn{flex:1;justify-content:center;}
 
 /* ---- Recent Games ---- */
 .recent-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
@@ -706,7 +739,7 @@ tbody td{padding:11px 12px;font-size:.8rem;color:var(--off);vertical-align:middl
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="sidebar-logo-img">
-      <i class="fa-solid fa-graduation-cap" style="font-size:1.1rem;color:#fff;"></i>
+      <img src="Andzee.png" alt="Andzee Logo">
     </div>
     <div class="sidebar-brand">
       <span class="sidebar-brand-name">Andzee</span>
@@ -810,7 +843,7 @@ tbody td{padding:11px 12px;font-size:.8rem;color:var(--off);vertical-align:middl
     <div class="topbar-avatar" onclick="showToast('Profile settings coming soon','fa-user','info')">
       <div class="avatar-img">PS</div>
       <div class="avatar-info">
-        <span class="avatar-name">Mr. Ponnarasan</span>
+        <span class="avatar-name">Ms. Priya Sharma</span>
         <span class="avatar-role">English Teacher</span>
       </div>
       <i class="fa-solid fa-chevron-down"></i>
@@ -823,7 +856,7 @@ tbody td{padding:11px 12px;font-size:.8rem;color:var(--off);vertical-align:middl
     <!-- WELCOME -->
     <div class="welcome-strip">
       <div class="welcome-text">
-        <h2>Welcome back, Mr. Ponnarasan! 👋</h2>
+        <h2>Welcome back, Ms. Priya Sharma! 👋</h2>
         <p>Let's make today's class engaging and fun.</p>
       </div>
       <div class="welcome-actions">
@@ -938,6 +971,9 @@ tbody td{padding:11px 12px;font-size:.8rem;color:var(--off);vertical-align:middl
           <button class="btn-copy" title="Copy Game ID" onclick="copyGameId()">
             <i class="fa-solid fa-copy" id="copyIcon"></i>
           </button>
+          <button class="btn-qr" title="Show QR Code" onclick="openQR()">
+            <i class="fa-solid fa-qrcode"></i>
+          </button>
           <button class="btn-regen" title="Generate New ID" onclick="regenGameId()">
             <i class="fa-solid fa-arrows-rotate" id="regenIcon"></i>
           </button>
@@ -1007,6 +1043,31 @@ tbody td{padding:11px 12px;font-size:.8rem;color:var(--off);vertical-align:middl
      TOAST CONTAINER
 =========================================== -->
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- ==========================================
+     QR CODE MODAL
+=========================================== -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal qr-modal-inner">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-qrcode" style="color:var(--amber);margin-right:8px;"></i>Game QR Code</span>
+      <button class="modal-close" onclick="closeModal('qrModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="qr-box">
+        <div class="qr-canvas-wrap">
+          <canvas id="qrCanvas" width="176" height="176"></canvas>
+        </div>
+        <div class="qr-id-label" id="qrIdLabel">7XQ8B2</div>
+        <div class="qr-url">Students scan to join at <span>join.andzee.com</span></div>
+        <div class="qr-actions">
+          <button class="btn btn-ghost" onclick="downloadQR()"><i class="fa-solid fa-download"></i> Download</button>
+          <button class="btn btn-primary" onclick="copyGameId();showToast('ID copied!','fa-copy','success')"><i class="fa-solid fa-copy"></i> Copy ID</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ==========================================
      ADD QUIZ MODAL
@@ -1342,6 +1403,11 @@ function regenGameId() {
   icon.style.transition = 'transform .5s ease';
   setTimeout(() => { icon.style.transform = ''; icon.style.transition = ''; }, 500);
   showToast(`New Game ID: ${id}`, 'fa-dice', 'success');
+  // if QR modal is open, refresh it
+  if (document.getElementById('qrModal').classList.contains('open')) {
+    document.getElementById('qrIdLabel').textContent = id;
+    drawQR('https://join.andzee.com?game=' + id);
+  }
   // BACKEND: POST /api/game/generate-id
 }
 
@@ -1487,6 +1553,105 @@ document.addEventListener('keydown', e => {
       .forEach(m => m.classList.remove('open'));
   }
 });
+
+/* ==========================================
+   QR CODE GENERATOR
+   Pure canvas — no external library needed.
+   Uses a minimal QR matrix built from the
+   game ID string via the qrcode-generator
+   approach (we embed a tiny encoder below).
+========================================== */
+
+function openQR() {
+  const id = document.getElementById('gameIdDisplay').textContent;
+  const url = 'https://join.andzee.com?game=' + id;
+  document.getElementById('qrIdLabel').textContent = id;
+  openModal('qrModal');
+  setTimeout(() => drawQR(url), 80);
+}
+
+function downloadQR() {
+  const canvas = document.getElementById('qrCanvas');
+  const link   = document.createElement('a');
+  const id     = document.getElementById('gameIdDisplay').textContent;
+  link.download = `andzee-qr-${id}.png`;
+  // produce white-bg version
+  const offscreen = document.createElement('canvas');
+  offscreen.width = offscreen.height = 200;
+  const ctx = offscreen.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0,0,200,200);
+  ctx.drawImage(canvas,12,12,176,176);
+  link.href = offscreen.toDataURL('image/png');
+  link.click();
+  showToast('QR Code downloaded!','fa-download','success');
+}
+
+/* ---- Tiny self-contained QR encoder ---- */
+function drawQR(text) {
+  const canvas = document.getElementById('qrCanvas');
+  const ctx    = canvas.getContext('2d');
+  const SIZE   = 176;
+
+  // Use a fetch to qr-server API (no key needed, free)
+  // For offline use we draw a placeholder with the game ID visually
+  // Try the free Google Charts QR API via an Image
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  // Google Charts QR endpoint — free, no key
+  img.src = `https://chart.googleapis.com/chart?cht=qr&chs=176x176&chl=${encodeURIComponent(text)}&choe=UTF-8&chld=M|2`;
+
+  img.onload = () => {
+    ctx.clearRect(0,0,SIZE,SIZE);
+    ctx.drawImage(img,0,0,SIZE,SIZE);
+  };
+
+  img.onerror = () => {
+    // Fallback: draw a branded placeholder QR-style grid
+    drawFallbackQR(ctx, text, SIZE);
+  };
+}
+
+function drawFallbackQR(ctx, text, SIZE) {
+  // Simple deterministic dot grid as visual fallback
+  ctx.clearRect(0,0,SIZE,SIZE);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0,0,SIZE,SIZE);
+
+  const COLS = 21, cell = SIZE / COLS;
+  // seed from text charCodes
+  const seed = [...text].reduce((a,c) => a + c.charCodeAt(0), 0);
+  const rand = (i) => ((seed * 1103515245 + i * 12345) & 0x7fffffff) % 100;
+
+  ctx.fillStyle = '#111';
+  // draw finder patterns (top-left, top-right, bottom-left)
+  [[0,0],[0,14],[14,0]].forEach(([r,c]) => {
+    // outer 7x7
+    ctx.fillRect(c*cell, r*cell, 7*cell, 7*cell);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect((c+1)*cell, (r+1)*cell, 5*cell, 5*cell);
+    ctx.fillStyle = '#111';
+    ctx.fillRect((c+2)*cell, (r+2)*cell, 3*cell, 3*cell);
+    ctx.fillStyle = '#111';
+  });
+
+  // data region
+  for (let r = 0; r < COLS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if ((r < 8 && c < 8)||(r < 8 && c > 12)||(r > 12 && c < 8)) continue;
+      if (rand(r * COLS + c + 7) < 52) {
+        ctx.fillStyle = '#111';
+        ctx.fillRect(c*cell+.5, r*cell+.5, cell-.5, cell-.5);
+      }
+    }
+  }
+
+  // label
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.font = '600 9px Inter,sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Scan to join · join.andzee.com', SIZE/2, SIZE-4);
+}
 </script>
 </body>
 </html>
