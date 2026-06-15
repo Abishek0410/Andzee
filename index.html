@@ -30,7 +30,9 @@
             <div class="logo-badge">
                 <img src="Andzee.png" alt="Andzee Logo" class="start-logo">
             </div>
+
             <p class="start-tagline">Learn · Compete · Succeed</p>
+
             <button id="startExperience">
                 <span class="btn-text">
                     <i class="fa-solid fa-play"></i>
@@ -50,6 +52,7 @@
             class="loader-video"
             playsinline
             preload="auto">
+
             <source src="andzee-loader.mp4" type="video/mp4">
         </video>
 
@@ -66,12 +69,12 @@
 
         <canvas id="mainCanvas"></canvas>
 
-        <!-- Aurora background layers -->
+        <!-- Aurora Background -->
         <div class="aurora aurora-blue"></div>
         <div class="aurora aurora-purple"></div>
         <div class="aurora aurora-amber"></div>
 
-        <!-- Subtle floating icons -->
+        <!-- Floating Icons -->
         <div class="floating-icons" aria-hidden="true">
             <i class="fa-solid fa-paper-plane icon icon1"></i>
             <i class="fa-solid fa-star icon icon2"></i>
@@ -85,7 +88,7 @@
             <!-- Logo -->
             <div class="logo-lockup fade-up">
                 <div class="main-logo-wrap">
-                    <img src="Andzee.png" alt="Andzee" class="main-logo">
+                    <img src="assets/Andzee.png" alt="Andzee Logo" class="main-logo">
                 </div>
             </div>
 
@@ -99,54 +102,63 @@
                 Learn English · Compete Smart · Get Placement Ready
             </p>
 
-            <!-- Card -->
+            <!-- Login Card -->
             <div class="join-card fade-up delay-3">
 
-                <!-- Student section -->
+                <!-- ==========================================
+                            STUDENT SECTION
+                =========================================== -->
                 <div class="card-section">
+
                     <div class="section-eyebrow">
                         <span class="eyebrow-dot student-dot"></span>
                         Student — Join a Live Game
                     </div>
 
-                    <div class="input-row">
-                        <div class="input-wrap">
-                            <i class="fa-solid fa-hashtag input-icon"></i>
-                            <input
-                                type="text"
-                                id="gameId"
-                                placeholder="Game ID"
-                                autocomplete="off"
-                                maxlength="12">
-                        </div>
-                        <button id="joinBtn">
-                            <span>Join</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
+                    <button id="joinBtn" class="student-join-btn" onclick="window.location.href='student.html'">
+                        <span>Join Game</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
                 </div>
 
                 <!-- Divider -->
                 <div class="card-divider">
                     <div class="divider-line"></div>
-                    <span class="divider-label">or</span>
+
+                    <span class="divider-label">
+                        or
+                    </span>
+
                     <div class="divider-line"></div>
                 </div>
 
-                <!-- Teacher section -->
+                <!-- ==========================================
+                            TEACHER SECTION
+                =========================================== -->
                 <div class="card-section">
+
                     <div class="section-eyebrow">
                         <span class="eyebrow-dot teacher-dot"></span>
                         Teacher — Manage Sessions
                     </div>
 
-                    <button class="teacher-btn" id="hostBtn" onclick="window.location.href='teacher.html'">
+                    <button
+                        class="teacher-btn"
+                        id="hostBtn"
+                        onclick="window.location.href='teacher.html'">
+
                         <span class="teacher-icon-wrap">
                             <i class="fa-solid fa-chalkboard-user"></i>
                         </span>
-                        <span class="teacher-label">Teacher Dashboard</span>
+
+                        <span class="teacher-label">
+                            Teacher Dashboard
+                        </span>
+
                         <i class="fa-solid fa-chevron-right teacher-arrow"></i>
                     </button>
+
                 </div>
 
             </div>
@@ -159,5 +171,6 @@
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
